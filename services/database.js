@@ -18,16 +18,16 @@ module.exports = {
         })
     },
 
-    companyList: () => {
+    companyList: (listLimit) => {
         return new Promise((resolve, reject) => {
             let sql = `
                 SELECT
                     *
                 FROM companies
-                ORDER BY id DESC LIMIT 10
+                ORDER BY id DESC LIMIT ?
             `;
 
-            db.query(sql, function (err, result) {
+            db.query(sql, [listLimit], function (err, result) {
                 resolve(result);
             });
         })

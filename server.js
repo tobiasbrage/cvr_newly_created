@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 const app = express();
 const port = 3000;
 
@@ -18,7 +19,7 @@ app.use(express.static('public'));
 
 // page not found
 app.get('*', function(req, res){
-    res.status(404).send('Siden findes ikke.');
+    res.status(404).send('404');
 });
 
 // server

@@ -1,15 +1,27 @@
 const request = require('request');
 const database = require('../services/database');
+const email = require('../services/email');
 const nodemailer = require('nodemailer');
 
 module.exports = function (app) {
 
     app.get('/', async (req, res) => {
+        let sendEmail = await email.emailSend();
+        console.log(sendEmail);
         res.send('landing page');
     });
 
-    app.get('/company/latest', async (req, res) => {
-        let latestCompanies = await database.companyList();
+    app.get('/company/latest/:limit', async (req, res) => {
+        let listLimitUrl = req.params.limit;
+        listLimitUrl = Number(listLimitUrl);
+        console.log(listLimitUrl);
+        let listLimit;
+        if (typeof listLimitUrl !== 'undefined' && !isNaN(listLimitUrl) && listLimitUrl !== '' && listLimitUrl != 0) {
+            listLimit = listLimitUrl;
+        } else {
+            listLimit = 10;
+        }
+        let latestCompanies = await database.companyList(listLimit);
         console.log(latestCompanies);
         res.json(latestCompanies);
     });
@@ -31,11 +43,13 @@ module.exports = function (app) {
                         // company data json
                         let companyData = await companyDataRes.json(); 
                         if(companyData.message === 200) {
-                            try {       
-                                // try insert company into database 
-                                let insertCompanyDb = await database.companyInsert(companyData.identification, companyData.name, companyData.branch, companyData.type, companyData.email, companyData.address, companyData.date, timestampUnix);
-                                // company added to database
-                                console.log(insertCompanyDb.message);
+                            try {      
+                                if(companyData.type !== 'Frivillig forening') {
+                                    // try insert company into database 
+                                    let insertCompanyDb = await database.companyInsert(companyData.identification, companyData.name, companyData.branch, companyData.type, companyData.email, companyData.address, companyData.date, timestampUnix);
+                                    // company added to database
+                                    console.log(insertCompanyDb.message);
+                                }
                             } catch (error) {
                                 console.log('added to database');
                             }
