@@ -1,12 +1,10 @@
 const request = require('request');
 const database = require('../services/database');
 const email = require('../services/email');
-const nodemailer = require('nodemailer');
 
 module.exports = function (app) {
 
     app.get('/', async (req, res) => {
-        //let sendEmail = await email.emailSend(0);
         res.send('landing page');
     });
 
@@ -47,7 +45,7 @@ module.exports = function (app) {
                 if(companyDbCheck === 0) {
                     try {
                         // try getting company data
-                        let companyDataRes = await fetch(`http://167.71.40.25:3000/${companyId}`);
+                        let companyDataRes = await fetch(`www.167.71.40.25:3000/${companyId}`);
                         // company data json
                         let companyData = await companyDataRes.json(); 
                         if(companyData.message === 200) {
