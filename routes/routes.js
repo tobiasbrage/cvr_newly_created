@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 module.exports = function (app) {
 
     app.get('/', async (req, res) => {
-        let sendEmail = await email.emailSend(0);
+        //let sendEmail = await email.emailSend(0);
         res.send('landing page');
     });
 
