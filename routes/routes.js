@@ -6,8 +6,7 @@ const nodemailer = require('nodemailer');
 module.exports = function (app) {
 
     app.get('/', async (req, res) => {
-        let sendEmail = await email.emailSend();
-        console.log(sendEmail);
+        let sendEmail = await email.emailSend(0);
         res.send('landing page');
     });
 
@@ -22,14 +21,23 @@ module.exports = function (app) {
             listLimit = 10;
         }
         let latestCompanies = await database.companyList(listLimit);
-        console.log(latestCompanies);
+        //console.log(latestCompanies);
         res.json(latestCompanies);
     });
 
 
-    app.get('/company/update', async (req, res) => {
-        let newCompaniesUrl = 'https://www.proff.dk/segmentering?sort=establishedYearDesc&mainUnit=true&email=true&location=1000-3670%2C4000-4700';
+    app.get('/company/update/:page', async (req, res) => {
+        let urlPageReq = req.params.page;
+        urlPageReq = Number(urlPageReq);
+        let urlPage;
+        if (typeof urlPageReq !== 'undefined' && !isNaN(urlPageReq) && urlPageReq !== '' && urlPageReq != 0) {
+            urlPage = urlPageReq;
+        } else {
+            urlPage = 1;
+        }
+        let newCompaniesUrl = `https://www.proff.dk/segmentering?sort=establishedYearDesc&mainUnit=true&email=true&location=1000-3670%2C4000-4700&page=${urlPage}`;
         const timestampUnix = new Date().getTime();
+        let companyAddedCount = 0;
         request(newCompaniesUrl, async (err, response, body) => {
             let companyIdCount = Number(body.split(`<span>CVR-nr</span>`).length - 1);
             //console.log(`total entries: ${companyIdCount}`);
@@ -39,7 +47,7 @@ module.exports = function (app) {
                 if(companyDbCheck === 0) {
                     try {
                         // try getting company data
-                        let companyDataRes = await fetch(`http://localhost:3000/company/${companyId}`);
+                        let companyDataRes = await fetch(`http://167.71.40.25:3000/${companyId}`);
                         // company data json
                         let companyData = await companyDataRes.json(); 
                         if(companyData.message === 200) {
@@ -49,6 +57,7 @@ module.exports = function (app) {
                                     let insertCompanyDb = await database.companyInsert(companyData.identification, companyData.name, companyData.branch, companyData.type, companyData.email, companyData.address, companyData.date, timestampUnix);
                                     // company added to database
                                     console.log(insertCompanyDb.message);
+                                    companyAddedCount ++;
                                 }
                             } catch (error) {
                                 console.log('added to database');
@@ -63,6 +72,8 @@ module.exports = function (app) {
                     console.log('Company already in database - skipping');
                 }
             }
+
+            let sendEmail = await email.emailSend(companyAddedCount);
             res.send('');
         });
     });
