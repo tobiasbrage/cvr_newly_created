@@ -7,7 +7,7 @@ module.exports = {
       if(companiesAdded > 0) {
 
         let emailContent = ``;
-        let companyDataRes = await fetch(`www.167.71.40.25:3000/company/latest/${companiesAdded}`);
+        let companyDataRes = await fetch(`http://localhost:3000/company/latest/${companiesAdded}`);
         let companyData = await companyDataRes.json(); 
   
         companyData.forEach(element => {

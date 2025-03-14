@@ -45,7 +45,7 @@ module.exports = function (app) {
                 if(companyDbCheck === 0) {
                     try {
                         // try getting company data
-                        let companyDataRes = await fetch(`www.167.71.40.25:3000/${companyId}`);
+                        let companyDataRes = await fetch(`http://localhost:3000/${companyId}`);
                         // company data json
                         let companyData = await companyDataRes.json(); 
                         if(companyData.message === 200) {
