@@ -14,7 +14,7 @@ module.exports = {
           console.log(element.company_name);
           emailContent += `
           <div class="container" style="font-family: Arial, Helvetica, sans-serif; padding-bottom: 50px; padding-top: 10px; border-bottom:1px solid #eeeeee; margin:0;">
-            <div class="company-info" style="width:100%; padding:0; margin:0;">
+            <div class="company-info" style="width:100%; padding:0 20px 0 20px; margin:0;">
                 <p><strong>Navn:</strong> ${element.company_name}</p>
                 <p><strong>CVR-nr</strong> ${element.company_id}</p>
                 <p><strong>Adresse:</strong> ${element.company_address}</p>
