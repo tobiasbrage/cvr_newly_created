@@ -45,8 +45,8 @@ module.exports = {
           });
             
           var mailOptions = {
-              from: 'kontakt@atrengøring.dk, info@sjællands-erhvervsrengøring.dk, kontakt@atrengøring.dk',
-              to: 'tobiasbrage@me.com',
+              from: 'kontakt@atrengøring.dk',
+              to: 'tobiasbrage@me.com, kontakt@atrengøring.dk, info@sjællands-erhvervsrengøring.dk',
               subject: companiesAdded + ' nyligt oprettede virksomheder',
               html: emailContent
           };
