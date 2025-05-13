@@ -1,6 +1,6 @@
 module.exports = {
 
-    companyInsert: (companyId, companyName, companyBranch, companyType, companyEmail, companyAddress, companyDate, timestampUnix) => {
+    companyInsert: (companyId, companyName, companyType, companyAddress, companyDate, timestampUnix) => {
 
         return new Promise((resolve, reject) => {
             let sql = `
@@ -8,7 +8,7 @@ module.exports = {
                 VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?)
             `;
 
-            db.query(sql, [companyId, companyName, companyBranch, companyType, companyEmail, companyAddress, companyDate, timestampUnix], function (err, result) {
+            db.query(sql, [companyId, companyName, 'none', companyType, 'none', companyAddress, companyDate, timestampUnix], function (err, result) {
                 if (err) {
                     reject({"message":err});
                 } else {
