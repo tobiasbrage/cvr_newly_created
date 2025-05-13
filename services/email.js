@@ -18,8 +18,6 @@ module.exports = {
                 <p><strong>Navn:</strong> ${element.company_name}</p>
                 <p><strong>CVR-nr</strong> ${element.company_id}</p>
                 <p><strong>Adresse:</strong> ${element.company_address}</p>
-                <p><strong>Email:</strong> <a href="mailto:${element.company_email}">${element.company_email}</a></p>
-                <p><strong>Branche</strong> ${element.company_branch}</p>
                 <p><strong>Virksomhedsform</strong> ${element.company_type}</p>
                 <p><strong>Oprettelsesdato</strong> ${element.company_date}</p>
                 <a href="https://virmo.dk/firma/${element.company_id}">Mere om virksomheden på Virmo.dk</a>
